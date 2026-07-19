@@ -1,8 +1,8 @@
-const { createSubscriber } = require('../lib/db');
-const { sendNewsletterConfirmation } = require('../lib/email');
-const { validateNewsletter } = require('../lib/validate');
-const { isRateLimited, getRateLimitHeaders, getClientIp } = require('../lib/rateLimit');
-const { created, error, validationError, rateLimitError, parseBody, getRequestId } = require('../lib/helpers');
+const { createSubscriber } = require('../../lib/db');
+const { sendNewsletterConfirmation } = require('../../lib/email');
+const { validateNewsletter } = require('../../lib/validate');
+const { isRateLimited, getRateLimitHeaders, getClientIp } = require('../../lib/rateLimit');
+const { created, error, validationError, rateLimitError, parseBody, getRequestId } = require('../../lib/helpers');
 
 module.exports = async function handler(req, res) {
   var requestId = getRequestId(req);
