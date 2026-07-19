@@ -1,0 +1,856 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>DZIGN STORE — Custom Apparel Printing</title>
+<meta name="description" content="DZIGN STORE — Custom printing on t-shirts, hoodies, caps, stickers, posters and more. Premium quality, bold designs.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=Inter:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --black:#0a0a0a;
+  --white:#f5f5f0;
+  --yellow:#e8c820;
+  --gray:#1a1a1a;
+  --gray-light:#2a2a2a;
+  --gray-mid:#888;
+  --font-display:'Anton',sans-serif;
+  --font-body:'Inter',sans-serif;
+  --font-serif:'Playfair Display',serif;
+}
+html{scroll-behavior:smooth;overflow-x:hidden}
+body{background:var(--black);color:var(--white);font-family:var(--font-body);overflow-x:hidden;-webkit-font-smoothing:antialiased}
+a{color:inherit;text-decoration:none}
+img{display:block;max-width:100%}
+
+/* LOADER */
+.loader{position:fixed;inset:0;z-index:9999;background:var(--black);display:flex;align-items:center;justify-content:center;transition:opacity .6s,visibility .6s}
+.loader.hidden{opacity:0;visibility:hidden}
+.loader-logo{font-family:var(--font-display);font-size:clamp(2rem,6vw,5rem);color:var(--yellow);letter-spacing:.15em;animation:pulse 1s ease-in-out infinite alternate}
+@keyframes pulse{from{opacity:.4;transform:scale(.97)}to{opacity:1;transform:scale(1)}}
+
+/* CURSOR */
+.cursor{width:20px;height:20px;border:2px solid var(--yellow);border-radius:50%;position:fixed;pointer-events:none;z-index:9998;transition:transform .15s ease,background .15s;mix-blend-mode:difference}
+.cursor.hover{transform:scale(2.5);background:var(--yellow);opacity:.3}
+@media(max-width:768px){.cursor{display:none}}
+
+/* NAV */
+nav{position:fixed;top:0;left:0;right:0;z-index:100;padding:1.2rem 2rem;display:flex;align-items:center;justify-content:space-between;background:rgba(10,10,10,.85);backdrop-filter:blur(12px);border-bottom:1px solid rgba(232,200,32,.12);transition:transform .3s}
+nav.hide-nav{transform:translateY(-100%)}
+.nav-logo{display:flex;align-items:center;gap:.75rem}
+.nav-logo img{height:42px;width:auto}
+.nav-logo span{font-family:var(--font-display);font-size:1.3rem;letter-spacing:.2em;color:var(--white)}
+.nav-links{display:flex;gap:2rem;align-items:center}
+.nav-links a{font-family:var(--font-body);font-size:.8rem;font-weight:500;letter-spacing:.18em;text-transform:uppercase;color:var(--gray-mid);transition:color .2s;position:relative}
+.nav-links a::after{content:'';position:absolute;bottom:-4px;left:0;width:0;height:2px;background:var(--yellow);transition:width .3s}
+.nav-links a:hover{color:var(--white)}
+.nav-links a:hover::after{width:100%}
+.nav-cta{padding:.6rem 1.5rem;border:1px solid var(--yellow);font-family:var(--font-display);font-size:.75rem;letter-spacing:.2em;color:var(--yellow);transition:all .25s;cursor:pointer;background:transparent}
+.nav-cta:hover{background:var(--yellow);color:var(--black)}
+.hamburger{display:none;flex-direction:column;gap:5px;cursor:pointer;padding:5px}
+.hamburger span{width:28px;height:2px;background:var(--white);transition:all .3s}
+.mobile-menu{display:none;position:fixed;inset:0;background:var(--black);z-index:99;flex-direction:column;align-items:center;justify-content:center;gap:2rem}
+.mobile-menu.open{display:flex}
+.mobile-menu a{font-family:var(--font-display);font-size:2rem;letter-spacing:.15em;color:var(--white);transition:color .2s}
+.mobile-menu a:hover{color:var(--yellow)}
+@media(max-width:768px){
+  .nav-links{display:none}
+  .hamburger{display:flex}
+  .nav-logo span{display:none}
+}
+
+/* HERO */
+.hero{min-height:100vh;position:relative;display:flex;align-items:flex-end;padding:4rem 2rem;overflow:hidden}
+.hero-bg{position:absolute;inset:0;background:linear-gradient(135deg,var(--black) 0%,#111 50%,#1a1510 100%)}
+.hero-bg::after{content:'';position:absolute;inset:0;background:url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100"><rect fill="none" width="100" height="100" stroke="%23333" stroke-width=".5"/></svg>');opacity:.15}
+.hero-bg-img{position:absolute;inset:0;overflow:hidden}
+.hero-bg-img img{width:100%;height:100%;object-fit:cover;opacity:.18;filter:grayscale(.6) contrast(1.2)}
+.hero-content{position:relative;z-index:2;max-width:900px}
+.hero-tag{font-family:var(--font-body);font-size:.75rem;letter-spacing:.3em;text-transform:uppercase;color:var(--yellow);margin-bottom:1.5rem;display:flex;align-items:center;gap:1rem}
+.hero-tag::before{content:'';width:40px;height:1px;background:var(--yellow)}
+.hero h1{font-family:var(--font-display);font-size:clamp(3.5rem,10vw,9rem);line-height:.9;letter-spacing:-.02em;text-transform:uppercase;margin-bottom:1.5rem}
+.hero h1 .stroke{-webkit-text-stroke:2px var(--white);color:transparent}
+.hero h1 .yellow{color:var(--yellow)}
+.hero-sub{font-family:var(--font-serif);font-size:clamp(1rem,2vw,1.4rem);font-weight:300;color:var(--gray-mid);max-width:500px;line-height:1.6;margin-bottom:2.5rem;font-style:italic}
+.hero-btns{display:flex;gap:1rem;flex-wrap:wrap}
+.btn-primary{padding:1rem 2.5rem;background:var(--yellow);color:var(--black);font-family:var(--font-display);font-size:.85rem;letter-spacing:.2em;border:none;cursor:pointer;transition:all .25s;position:relative;overflow:hidden}
+.btn-primary:hover{transform:translateY(-2px);box-shadow:0 8px 30px rgba(232,200,32,.3)}
+.btn-secondary{padding:1rem 2.5rem;border:1px solid rgba(255,255,255,.2);color:var(--white);font-family:var(--font-display);font-size:.85rem;letter-spacing:.2em;background:transparent;cursor:pointer;transition:all .25s}
+.btn-secondary:hover{border-color:var(--yellow);color:var(--yellow)}
+.hero-scroll{position:absolute;bottom:2rem;right:2rem;z-index:2;display:flex;flex-direction:column;align-items:center;gap:.5rem}
+.hero-scroll span{font-size:.65rem;letter-spacing:.3em;text-transform:uppercase;color:var(--gray-mid);writing-mode:vertical-rl}
+.scroll-line{width:1px;height:60px;background:linear-gradient(to bottom,var(--yellow),transparent);animation:scrollPulse 2s ease infinite}
+@keyframes scrollPulse{0%,100%{opacity:.3}50%{opacity:1}}
+
+/* MARQUEE */
+.marquee{padding:1.2rem 0;border-top:1px solid var(--gray);border-bottom:1px solid var(--gray);overflow:hidden;background:var(--black)}
+.marquee-track{display:flex;gap:3rem;animation:marqueeScroll 20s linear infinite;white-space:nowrap}
+.marquee-track span{font-family:var(--font-display);font-size:1rem;letter-spacing:.3em;text-transform:uppercase;color:var(--gray-mid);flex-shrink:0}
+.marquee-track .dot{color:var(--yellow);font-size:1.5rem;align-self:center}
+@keyframes marqueeScroll{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+
+/* SECTION COMMON */
+section{position:relative}
+.section-pad{padding:6rem 2rem}
+.section-label{font-family:var(--font-body);font-size:.7rem;letter-spacing:.4em;text-transform:uppercase;color:var(--yellow);margin-bottom:1rem;display:flex;align-items:center;gap:1rem}
+.section-label::before{content:'';width:30px;height:1px;background:var(--yellow)}
+.section-title{font-family:var(--font-display);font-size:clamp(2.5rem,6vw,5rem);line-height:.95;text-transform:uppercase;margin-bottom:1.5rem}
+.section-desc{font-family:var(--font-serif);font-size:1.05rem;line-height:1.7;color:var(--gray-mid);max-width:550px;font-style:italic}
+
+/* ABOUT */
+.about{display:grid;grid-template-columns:1fr 1fr;min-height:100vh;border-top:1px solid var(--gray)}
+.about-visual{position:relative;overflow:hidden;background:var(--gray)}
+.about-visual::after{content:'';position:absolute;inset:0;background:linear-gradient(135deg,rgba(10,10,10,.3),rgba(10,10,10,.1))}
+.about-visual img{width:100%;height:100%;object-fit:cover;transition:transform .6s}
+.about-visual:hover img{transform:scale(1.03)}
+.about-text{display:flex;flex-direction:column;justify-content:center;padding:4rem;border-left:1px solid var(--gray)}
+.about-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:2rem;margin-top:3rem;padding-top:2rem;border-top:1px solid var(--gray)}
+.stat-num{font-family:var(--font-display);font-size:2.5rem;color:var(--yellow)}
+.stat-label{font-size:.7rem;letter-spacing:.2em;text-transform:uppercase;color:var(--gray-mid);margin-top:.3rem}
+@media(max-width:768px){
+  .about{grid-template-columns:1fr}
+  .about-visual{height:50vh}
+  .about-text{padding:2rem}
+  .about-text{border-left:none;border-top:1px solid var(--gray)}
+}
+
+/* PRODUCTS */
+.products{border-top:1px solid var(--gray)}
+.products-header{display:flex;align-items:flex-end;justify-content:space-between;padding:4rem 2rem 0;flex-wrap:wrap;gap:1rem}
+.products-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:1px;background:var(--gray);margin:2rem}
+.product-card{background:var(--black);padding:0;position:relative;overflow:hidden;cursor:pointer;group:true}
+.product-card .product-img{height:380px;overflow:hidden;position:relative}
+.product-card .product-img img{width:100%;height:100%;object-fit:cover;transition:transform .5s,filter .5s;filter:grayscale(.3)}
+.product-card:hover .product-img img{transform:scale(1.08);filter:grayscale(0)}
+.product-card .product-overlay{position:absolute;inset:0;background:linear-gradient(to top,rgba(10,10,10,.9) 0%,transparent 60%);opacity:0;transition:opacity .4s;display:flex;align-items:flex-end;padding:1.5rem}
+.product-card:hover .product-overlay{opacity:1}
+.product-card .product-info{padding:1.2rem 1.5rem}
+.product-category{font-size:.65rem;letter-spacing:.3em;text-transform:uppercase;color:var(--yellow);margin-bottom:.4rem}
+.product-name{font-family:var(--font-display);font-size:1.1rem;letter-spacing:.05em;text-transform:uppercase}
+.product-price{font-family:var(--font-body);font-size:.85rem;color:var(--gray-mid);margin-top:.3rem}
+.product-card .view-btn{font-family:var(--font-display);font-size:.7rem;letter-spacing:.2em;color:var(--yellow);border-bottom:1px solid var(--yellow);padding-bottom:2px;align-self:flex-end}
+
+/* SERVICES */
+.services{border-top:1px solid var(--gray);background:var(--gray)}
+.services-inner{display:grid;grid-template-columns:1fr 1fr;min-height:80vh}
+.services-left{padding:4rem;display:flex;flex-direction:column;justify-content:center;border-right:1px solid var(--gray)}
+.services-right{display:grid;grid-template-rows:repeat(4,1fr)}
+.service-item{padding:2.5rem 3rem;border-bottom:1px solid var(--gray);display:flex;align-items:center;gap:2rem;cursor:pointer;transition:background .3s}
+.service-item:last-child{border-bottom:none}
+.service-item:hover{background:var(--gray-light)}
+.service-num{font-family:var(--font-display);font-size:2.5rem;color:var(--yellow);opacity:.3;min-width:60px;transition:opacity .3s}
+.service-item:hover .service-num{opacity:1}
+.service-info h3{font-family:var(--font-display);font-size:1.2rem;letter-spacing:.1em;text-transform:uppercase;margin-bottom:.3rem}
+.service-info p{font-size:.85rem;color:var(--gray-mid);line-height:1.5}
+.service-arrow{margin-left:auto;font-size:1.5rem;color:var(--gray-mid);transition:transform .3s,color .3s}
+.service-item:hover .service-arrow{transform:translateX(5px);color:var(--yellow)}
+@media(max-width:768px){
+  .services-inner{grid-template-columns:1fr}
+  .services-left{border-right:none;border-bottom:1px solid var(--gray)}
+  .service-item{padding:1.5rem}
+}
+
+/* INSTAGRAM FEED */
+.insta-feed{border-top:1px solid var(--gray);padding:4rem 0 0}
+.insta-header{padding:0 2rem 2rem;display:flex;align-items:flex-end;justify-content:space-between;flex-wrap:wrap;gap:1rem}
+.insta-grid{display:grid;grid-template-columns:repeat(6,1fr);gap:2px}
+.insta-item{position:relative;aspect-ratio:1;overflow:hidden;cursor:pointer}
+.insta-item img{width:100%;height:100%;object-fit:cover;transition:transform .4s,filter .4s;filter:grayscale(.4) brightness(.8)}
+.insta-item:hover img{transform:scale(1.1);filter:grayscale(0) brightness(1)}
+.insta-item .insta-overlay{position:absolute;inset:0;background:rgba(232,200,32,.15);display:flex;align-items:center;justify-content:center;opacity:0;transition:opacity .3s}
+.insta-item:hover .insta-overlay{opacity:1}
+.insta-overlay svg{width:28px;height:28px;fill:var(--white)}
+@media(max-width:1024px){.insta-grid{grid-template-columns:repeat(3,1fr)}}
+@media(max-width:600px){.insta-grid{grid-template-columns:repeat(2,1fr)}}
+
+/* TESTIMONIAL */
+.testimonial{border-top:1px solid var(--gray);min-height:60vh;display:flex;align-items:center;position:relative;overflow:hidden}
+.testimonial-bg{position:absolute;inset:0;opacity:.08}
+.testimonial-bg svg{width:100%;height:100%}
+.testimonial-inner{position:relative;z-index:2;max-width:800px;margin:0 auto;padding:4rem 2rem;text-align:center}
+.quote-mark{font-family:var(--font-serif);font-size:8rem;line-height:1;color:var(--yellow);opacity:.3}
+.testimonial-text{font-family:var(--font-serif);font-size:clamp(1.3rem,3vw,2rem);line-height:1.6;font-style:italic;color:var(--white);margin:1rem 0 2rem}
+.testimonial-author{font-family:var(--font-display);font-size:.8rem;letter-spacing:.3em;text-transform:uppercase;color:var(--yellow)}
+
+/* CTA */
+.cta{border-top:1px solid var(--gray);min-height:70vh;display:flex;align-items:center;justify-content:center;text-align:center;position:relative;overflow:hidden;background:linear-gradient(135deg,var(--black),#0d0d0d)}
+.cta::before{content:'';position:absolute;inset:0;background:radial-gradient(circle at 50% 50%,rgba(232,200,32,.06),transparent 70%)}
+.cta-content{position:relative;z-index:2;padding:2rem}
+.cta h2{font-family:var(--font-display);font-size:clamp(3rem,8vw,7rem);line-height:.9;text-transform:uppercase;margin-bottom:1.5rem}
+.cta h2 .yellow{color:var(--yellow)}
+.cta p{font-family:var(--font-serif);font-size:1.1rem;color:var(--gray-mid);font-style:italic;margin-bottom:2.5rem;max-width:500px;margin-left:auto;margin-right:auto}
+
+/* FOOTER */
+footer{border-top:1px solid var(--gray);background:var(--black)}
+.footer-top{display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:3rem;padding:4rem 2rem;border-bottom:1px solid var(--gray)}
+.footer-brand .footer-logo{display:flex;align-items:center;gap:.75rem;margin-bottom:1rem}
+.footer-brand .footer-logo img{height:50px}
+.footer-brand p{font-size:.85rem;color:var(--gray-mid);line-height:1.7;max-width:300px}
+.footer-col h4{font-family:var(--font-display);font-size:.8rem;letter-spacing:.3em;text-transform:uppercase;color:var(--yellow);margin-bottom:1.2rem}
+.footer-col ul{list-style:none;display:flex;flex-direction:column;gap:.6rem}
+.footer-col li a{font-size:.85rem;color:var(--gray-mid);transition:color .2s}
+.footer-col li a:hover{color:var(--white)}
+.footer-bottom{display:flex;align-items:center;justify-content:space-between;padding:1.5rem 2rem;flex-wrap:wrap;gap:1rem}
+.footer-bottom p{font-size:.75rem;color:var(--gray-mid)}
+.footer-socials{display:flex;gap:1.2rem}
+.footer-socials a{width:36px;height:36px;border:1px solid var(--gray);display:flex;align-items:center;justify-content:center;border-radius:50%;transition:all .25s}
+.footer-socials a:hover{border-color:var(--yellow);background:var(--yellow)}
+.footer-socials a:hover svg{fill:var(--black)}
+.footer-socials a svg{width:16px;height:16px;fill:var(--gray-mid);transition:fill .25s}
+@media(max-width:768px){
+  .footer-top{grid-template-columns:1fr 1fr}
+  .footer-brand{grid-column:1/-1}
+}
+
+/* REVEAL ANIMATIONS */
+.reveal{opacity:0;transform:translateY(40px);transition:opacity .8s cubic-bezier(.16,1,.3,1),transform .8s cubic-bezier(.16,1,.3,1)}
+.reveal.visible{opacity:1;transform:translateY(0)}
+.reveal-delay-1{transition-delay:.15s}
+.reveal-delay-2{transition-delay:.3s}
+.reveal-delay-3{transition-delay:.45s}
+
+/* SMOOTH SCROLLBAR */
+::-webkit-scrollbar{width:6px}
+::-webkit-scrollbar-track{background:var(--black)}
+::-webkit-scrollbar-thumb{background:var(--gray);border-radius:3px}
+::-webkit-scrollbar-thumb:hover{background:var(--yellow)}
+
+/* SELECTION */
+::selection{background:var(--yellow);color:var(--black)}
+
+/* CONTACT FORM */
+.contact-form{max-width:600px;margin:0 auto;text-align:left}
+.form-row{display:grid;grid-template-columns:1fr 1fr;gap:1rem}
+.form-group{margin-bottom:1rem}
+.form-group input,.form-group textarea{width:100%;padding:.9rem 1.2rem;background:var(--gray);border:1px solid rgba(255,255,255,.1);color:var(--white);font-family:var(--font-body);font-size:.9rem;transition:border-color .25s;outline:none}
+.form-group input:focus,.form-group textarea:focus{border-color:var(--yellow)}
+.form-group textarea{resize:vertical;min-height:120px}
+.form-group input::placeholder,.form-group textarea::placeholder{color:var(--gray-mid)}
+.form-error{display:none;font-size:.75rem;color:#e74c3c;margin-top:.3rem}
+.form-group.error input,.form-group.error textarea{border-color:#e74c3c}
+.form-group.error .form-error{display:block}
+.form-submit{width:100%;margin-top:.5rem}
+.form-success,.form-error-global{text-align:center;padding:1rem;margin-top:1rem;font-size:.9rem}
+.form-success{color:var(--yellow);border:1px solid rgba(232,200,32,.3);background:rgba(232,200,32,.05)}
+.form-error-global{color:#e74c3c;border:1px solid rgba(231,76,60,.3);background:rgba(231,76,60,.05)}
+@media(max-width:600px){.form-row{grid-template-columns:1fr}}
+
+/* NEWSLETTER */
+.newsletter-section{border-top:1px solid var(--gray);padding:5rem 2rem;background:var(--black)}
+.newsletter-inner{max-width:800px;margin:0 auto;display:grid;grid-template-columns:1fr 1fr;gap:3rem;align-items:center}
+.newsletter-form{width:100%}
+.newsletter-input-group{display:flex;gap:0}
+.newsletter-input-group input{flex:1;padding:.9rem 1.2rem;background:var(--gray);border:1px solid rgba(255,255,255,.1);color:var(--white);font-family:var(--font-body);font-size:.9rem;outline:none;transition:border-color .25s}
+.newsletter-input-group input:focus{border-color:var(--yellow)}
+.newsletter-input-group input::placeholder{color:var(--gray-mid)}
+.newsletter-input-group .btn-primary{border:none;padding:.9rem 1.8rem;white-space:nowrap}
+.newsletter-msg{margin-top:.8rem;font-size:.85rem;padding:.6rem 1rem}
+.newsletter-msg.success{color:var(--yellow);border:1px solid rgba(232,200,32,.2);background:rgba(232,200,32,.05)}
+.newsletter-msg.error{color:#e74c3c;border:1px solid rgba(231,76,60,.2);background:rgba(231,76,60,.05)}
+@media(max-width:768px){.newsletter-inner{grid-template-columns:1fr;gap:2rem}}
+</style>
+</head>
+<body>
+
+<!-- LOADER -->
+<div class="loader" id="loader">
+  <div class="loader-logo">DZIGN</div>
+</div>
+
+<!-- CUSTOM CURSOR -->
+<div class="cursor" id="cursor"></div>
+
+<!-- NAV -->
+<nav id="navbar">
+  <a href="#" class="nav-logo">
+    <img src="logo.jpg" alt="DZIGN STORE Logo">
+  </a>
+  <div class="nav-links">
+    <a href="#about">About</a>
+    <a href="#products">Products</a>
+    <a href="#services">Services</a>
+    <a href="#feed">Feed</a>
+    <a href="#contact" class="nav-cta">Get a Quote</a>
+  </div>
+  <div class="hamburger" id="hamburger" aria-label="Menu">
+    <span></span><span></span><span></span>
+  </div>
+</nav>
+
+<!-- MOBILE MENU -->
+<div class="mobile-menu" id="mobileMenu">
+  <a href="#about" onclick="closeMobile()">About</a>
+  <a href="#products" onclick="closeMobile()">Products</a>
+  <a href="#services" onclick="closeMobile()">Services</a>
+  <a href="#feed" onclick="closeMobile()">Feed</a>
+  <a href="#contact" onclick="closeMobile()">Get a Quote</a>
+</div>
+
+<!-- HERO -->
+<section class="hero" id="hero">
+  <div class="hero-bg">
+    <div class="hero-bg-img">
+      <img src="https://images.unsplash.com/photo-1588345921523-c2dcdb7f1dcd?w=1600&q=80" alt="T-shirt printing workshop" loading="eager">
+    </div>
+  </div>
+  <div class="hero-content">
+    <div class="hero-tag reveal">Custom Printing Studio</div>
+    <h1 class="reveal reveal-delay-1">
+      <span class="stroke">We Print</span><br>
+      <span class="yellow">Your Vision</span>
+    </h1>
+    <p class="hero-sub reveal reveal-delay-2">Premium custom apparel and print — t-shirts, hoodies, caps, stickers, posters & more. From concept to creation.</p>
+    <div class="hero-btns reveal reveal-delay-3">
+      <button class="btn-primary" onclick="document.getElementById('products').scrollIntoView({behavior:'smooth'})">View Products</button>
+      <button class="btn-secondary" onclick="document.getElementById('contact').scrollIntoView({behavior:'smooth'})">Request Quote</button>
+    </div>
+  </div>
+  <div class="hero-scroll">
+    <span>Scroll</span>
+    <div class="scroll-line"></div>
+  </div>
+</section>
+
+<!-- MARQUEE -->
+<div class="marquee">
+  <div class="marquee-track">
+    <span>Custom T-Shirts</span><span class="dot">●</span>
+    <span>Hoodies</span><span class="dot">●</span>
+    <span>Stickers</span><span class="dot">●</span>
+    <span>Posters</span><span class="dot">●</span>
+    <span>Caps</span><span class="dot">●</span>
+    <span>Tote Bags</span><span class="dot">●</span>
+    <span>Embroidery</span><span class="dot">●</span>
+    <span>Sublimation</span><span class="dot">●</span>
+    <span>Custom T-Shirts</span><span class="dot">●</span>
+    <span>Hoodies</span><span class="dot">●</span>
+    <span>Stickers</span><span class="dot">●</span>
+    <span>Posters</span><span class="dot">●</span>
+    <span>Caps</span><span class="dot">●</span>
+    <span>Tote Bags</span><span class="dot">●</span>
+    <span>Embroidery</span><span class="dot">●</span>
+    <span>Sublimation</span><span class="dot">●</span>
+  </div>
+</div>
+
+<!-- ABOUT -->
+<section class="about" id="about">
+  <div class="about-visual reveal">
+    <img src="https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?w=900&q=80" alt="DZIGN STORE — premium printed apparel collection" loading="lazy">
+  </div>
+  <div class="about-text">
+    <div class="section-label reveal">Who We Are</div>
+    <h2 class="section-title reveal reveal-delay-1">Not Just<br>Printing.<br><span style="color:var(--yellow)">Craft.</span></h2>
+    <p class="section-desc reveal reveal-delay-2">DZIGN STORE is a custom apparel printing studio based in Algeria. We turn ideas into wearable art — premium prints on tees, hoodies, caps, stickers, posters and more. Every piece is made with precision and passion.</p>
+    <div class="about-stats reveal reveal-delay-3">
+      <div>
+        <div class="stat-num">500+</div>
+        <div class="stat-label">Orders Delivered</div>
+      </div>
+      <div>
+        <div class="stat-num">50+</div>
+        <div class="stat-label">Products</div>
+      </div>
+      <div>
+        <div class="stat-num">4.9</div>
+        <div class="stat-label">Rating</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PRODUCTS -->
+<section class="products" id="products">
+  <div class="products-header">
+    <div>
+      <div class="section-label reveal">Our Products</div>
+      <h2 class="section-title reveal reveal-delay-1">What We<br><span style="color:var(--yellow)">Create</span></h2>
+    </div>
+  </div>
+  <div class="products-grid">
+    <div class="product-card reveal">
+      <div class="product-img">
+        <img src="https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?w=800&q=80" alt="Custom T-Shirts — premium printed tees" loading="lazy">
+        <div class="product-overlay">
+          <span class="view-btn">View Collection →</span>
+        </div>
+      </div>
+      <div class="product-info">
+        <div class="product-category">Apparel</div>
+        <div class="product-name">Custom T-Shirts</div>
+        <div class="product-price">From 800 DA</div>
+      </div>
+    </div>
+    <div class="product-card reveal reveal-delay-1">
+      <div class="product-img">
+        <img src="https://images.unsplash.com/photo-1556821840-3a63f95609a7?w=800&q=80" alt="Premium Hoodies — streetwear hoodies" loading="lazy">
+        <div class="product-overlay">
+          <span class="view-btn">View Collection →</span>
+        </div>
+      </div>
+      <div class="product-info">
+        <div class="product-category">Apparel</div>
+        <div class="product-name">Premium Hoodies</div>
+        <div class="product-price">From 1,500 DA</div>
+      </div>
+    </div>
+    <div class="product-card reveal reveal-delay-2">
+      <div class="product-img">
+        <img src="https://images.unsplash.com/photo-1558618666-fcd25c85f82e?w=800&q=80" alt="Custom Stickers — vinyl die-cut stickers" loading="lazy">
+        <div class="product-overlay">
+          <span class="view-btn">View Collection →</span>
+        </div>
+      </div>
+      <div class="product-info">
+        <div class="product-category">Print</div>
+        <div class="product-name">Custom Stickers</div>
+        <div class="product-price">From 200 DA</div>
+      </div>
+    </div>
+    <div class="product-card reveal reveal-delay-3">
+      <div class="product-img">
+        <img src="https://images.unsplash.com/photo-1588850561407-ed78c334e67a?w=800&q=80" alt="Caps and Headwear — streetwear caps" loading="lazy">
+        <div class="product-overlay">
+          <span class="view-btn">View Collection →</span>
+        </div>
+      </div>
+      <div class="product-info">
+        <div class="product-category">Accessories</div>
+        <div class="product-name">Caps & Headwear</div>
+        <div class="product-price">From 600 DA</div>
+      </div>
+    </div>
+    <div class="product-card reveal">
+      <div class="product-img">
+        <img src="https://images.unsplash.com/photo-1513364776144-60967b0f800f?w=800&q=80" alt="Custom Posters — art and graphic prints" loading="lazy">
+        <div class="product-overlay">
+          <span class="view-btn">View Collection →</span>
+        </div>
+      </div>
+      <div class="product-info">
+        <div class="product-category">Print</div>
+        <div class="product-name">Custom Posters</div>
+        <div class="product-price">From 500 DA</div>
+      </div>
+    </div>
+    <div class="product-card reveal reveal-delay-1">
+      <div class="product-img">
+        <img src="https://images.unsplash.com/photo-1544816155-12df9643f363?w=800&q=80" alt="Tote Bags — custom canvas tote bags" loading="lazy">
+        <div class="product-overlay">
+          <span class="view-btn">View Collection →</span>
+        </div>
+      </div>
+      <div class="product-info">
+        <div class="product-category">Accessories</div>
+        <div class="product-name">Tote Bags</div>
+        <div class="product-price">From 700 DA</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SERVICES -->
+<section class="services" id="services">
+  <div class="services-inner">
+    <div class="services-left">
+      <div class="section-label reveal">What We Do</div>
+      <h2 class="section-title reveal reveal-delay-1">Our<br><span style="color:var(--yellow)">Services</span></h2>
+      <p class="section-desc reveal reveal-delay-2">From single custom pieces to bulk orders for businesses, events, and teams — we handle it all with precision and care.</p>
+    </div>
+    <div class="services-right">
+      <div class="service-item reveal">
+        <div class="service-num">01</div>
+        <div class="service-info">
+          <h3>Screen Printing</h3>
+          <p>High-quality screen printing on t-shirts, hoodies, and more. Perfect for bulk orders and vibrant colors.</p>
+        </div>
+        <div class="service-arrow">→</div>
+      </div>
+      <div class="service-item reveal reveal-delay-1">
+        <div class="service-num">02</div>
+        <div class="service-info">
+          <h3>Sublimation Printing</h3>
+          <p>Full-color, all-over prints that won't crack or fade. Ideal for complex designs and photographic prints.</p>
+        </div>
+        <div class="service-arrow">→</div>
+      </div>
+      <div class="service-item reveal reveal-delay-2">
+        <div class="service-num">03</div>
+        <div class="service-info">
+          <h3>Embroidery</h3>
+          <p>Premium embroidered logos and designs on caps, hoodies, and accessories for a professional finish.</p>
+        </div>
+        <div class="service-arrow">→</div>
+      </div>
+      <div class="service-item reveal reveal-delay-3">
+        <div class="service-num">04</div>
+        <div class="service-info">
+          <h3>Custom Stickers & Posters</h3>
+          <p>Die-cut stickers, vinyl decals, and high-res poster prints for brands, events, and personal use.</p>
+        </div>
+        <div class="service-arrow">→</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- INSTAGRAM FEED -->
+<section class="insta-feed" id="feed">
+  <div class="insta-header">
+    <div>
+      <div class="section-label reveal">Follow Us</div>
+      <h2 class="section-title reveal reveal-delay-1">@dzign_store</h2>
+    </div>
+    <a href="https://www.instagram.com/dzign_store/" target="_blank" rel="noopener" class="btn-secondary reveal reveal-delay-2" style="display:inline-block">Visit Instagram →</a>
+  </div>
+  <div class="insta-grid">
+    <div class="insta-item reveal"><img src="https://images.unsplash.com/photo-1588345921523-c2dcdb7f1dcd?w=400&q=75" alt="Printing process" loading="lazy"><div class="insta-overlay"><svg viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z"/></svg></div></div>
+    <div class="insta-item reveal"><img src="https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?w=400&q=75" alt="Custom t-shirts collection" loading="lazy"><div class="insta-overlay"><svg viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z"/></svg></div></div>
+    <div class="insta-item reveal"><img src="https://images.unsplash.com/photo-1556821840-3a63f95609a7?w=400&q=75" alt="Hoodie streetwear" loading="lazy"><div class="insta-overlay"><svg viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z"/></svg></div></div>
+    <div class="insta-item reveal"><img src="https://images.unsplash.com/photo-1558618666-fcd25c85f82e?w=400&q=75" alt="Custom stickers" loading="lazy"><div class="insta-overlay"><svg viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z"/></svg></div></div>
+    <div class="insta-item reveal"><img src="https://images.unsplash.com/photo-1588850561407-ed78c334e67a?w=400&q=75" alt="Streetwear caps" loading="lazy"><div class="insta-overlay"><svg viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z"/></svg></div></div>
+    <div class="insta-item reveal"><img src="https://images.unsplash.com/photo-1513364776144-60967b0f800f?w=400&q=75" alt="Custom poster art" loading="lazy"><div class="insta-overlay"><svg viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z"/></svg></div></div>
+  </div>
+</section>
+
+<!-- TESTIMONIAL -->
+<section class="testimonial">
+  <div class="testimonial-bg">
+    <svg viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <text x="50" y="60" text-anchor="middle" font-family="Anton" font-size="30" fill="currentColor" opacity=".1">DZIGN</text>
+    </svg>
+  </div>
+  <div class="testimonial-inner">
+    <div class="quote-mark reveal">"</div>
+    <p class="testimonial-text reveal reveal-delay-1">Best custom printing in Algeria. The quality is insane and the team actually cares about getting your vision right. Every order has been fire.</p>
+    <div class="testimonial-author reveal reveal-delay-2">— Happy Customer</div>
+  </div>
+</section>
+
+<!-- CONTACT FORM -->
+<section class="cta" id="contact">
+  <div class="cta-content">
+    <div class="section-label reveal" style="justify-content:center">Ready to Start?</div>
+    <h2 class="reveal reveal-delay-1">Let's<br><span class="yellow">Create</span><br>Together</h2>
+    <p class="reveal reveal-delay-2">Got a design idea? Need custom merch for your brand or event? Fill out the form below.</p>
+    <form id="contactForm" class="contact-form reveal reveal-delay-3" novalidate>
+      <div class="form-row">
+        <div class="form-group">
+          <input type="text" name="name" placeholder="Your Name" required minlength="2" maxlength="100" autocomplete="name">
+          <span class="form-error"></span>
+        </div>
+        <div class="form-group">
+          <input type="email" name="email" placeholder="Your Email" required autocomplete="email">
+          <span class="form-error"></span>
+        </div>
+      </div>
+      <div class="form-group">
+        <input type="text" name="subject" placeholder="Subject (optional)" maxlength="200">
+      </div>
+      <div class="form-group">
+        <textarea name="message" placeholder="Tell us about your project..." required minlength="10" maxlength="5000" rows="5"></textarea>
+        <span class="form-error"></span>
+      </div>
+      <button type="submit" class="btn-primary form-submit">
+        <span class="submit-text">Send Message</span>
+        <span class="submit-loading" style="display:none">Sending...</span>
+      </button>
+      <div class="form-success" style="display:none">
+        <p>Message sent! We'll get back to you soon.</p>
+      </div>
+      <div class="form-error-global" style="display:none">
+        <p>Something went wrong. Please try again or DM us on Instagram.</p>
+      </div>
+    </form>
+    <div class="reveal reveal-delay-3" style="margin-top:2rem">
+      <a href="https://www.instagram.com/dzign_store/" target="_blank" rel="noopener" class="btn-secondary" style="display:inline-block">Or DM on Instagram →</a>
+    </div>
+  </div>
+</section>
+
+<!-- NEWSLETTER -->
+<section class="newsletter-section" id="newsletter">
+  <div class="newsletter-inner">
+    <div class="newsletter-text">
+      <div class="section-label reveal">Stay in the Loop</div>
+      <h2 class="section-title reveal reveal-delay-1">Get <span style="color:var(--yellow)">Updates</span></h2>
+      <p class="section-desc reveal reveal-delay-2">New drops, custom design tips, and exclusive deals — straight to your inbox.</p>
+    </div>
+    <form id="newsletterForm" class="newsletter-form reveal reveal-delay-3" novalidate>
+      <div class="newsletter-input-group">
+        <input type="email" name="email" placeholder="Enter your email" required autocomplete="email">
+        <button type="submit" class="btn-primary">Subscribe</button>
+      </div>
+      <div class="newsletter-msg" style="display:none"></div>
+    </form>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-top">
+    <div class="footer-brand">
+      <div class="footer-logo">
+        <img src="logo.jpg" alt="DZIGN STORE">
+      </div>
+      <p>Custom apparel printing studio. Premium quality prints on t-shirts, hoodies, caps, stickers, posters & more. Based in Algeria, shipping worldwide.</p>
+    </div>
+    <div class="footer-col">
+      <h4>Navigate</h4>
+      <ul>
+        <li><a href="#about">About</a></li>
+        <li><a href="#products">Products</a></li>
+        <li><a href="#services">Services</a></li>
+        <li><a href="#feed">Feed</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h4>Products</h4>
+      <ul>
+        <li><a href="#products">T-Shirts</a></li>
+        <li><a href="#products">Hoodies</a></li>
+        <li><a href="#products">Caps</a></li>
+        <li><a href="#products">Stickers</a></li>
+        <li><a href="#products">Posters</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h4>Legal</h4>
+      <ul>
+        <li><a href="#">Privacy Policy</a></li>
+        <li><a href="#">Terms of Service</a></li>
+        <li><a href="#">Refund Policy</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <p>&copy; 2026 DZIGN STORE. All rights reserved.</p>
+    <div class="footer-socials">
+      <a href="https://www.instagram.com/dzign_store/" target="_blank" rel="noopener" aria-label="Instagram">
+        <svg viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z"/></svg>
+      </a>
+      <a href="https://www.tiktok.com/@dzign_store" target="_blank" rel="noopener" aria-label="TikTok">
+        <svg viewBox="0 0 24 24"><path d="M19.59 6.69a4.83 4.83 0 01-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 01-2.88 2.5 2.89 2.89 0 01-2.89-2.89 2.89 2.89 0 012.89-2.89c.28 0 .54.04.79.1v-3.5a6.37 6.37 0 00-.79-.05A6.34 6.34 0 003.15 15.2a6.34 6.34 0 0010.86 4.48V13.2a8.16 8.16 0 004.77 1.52v-3.45a4.85 4.85 0 01-.81.07 4.84 4.84 0 01-.38-4.65z"/></svg>
+      </a>
+    </div>
+  </div>
+</footer>
+
+<script>
+const API_BASE = window.location.origin + '/api';
+
+// ── LOADER ──────────────────────────────────────────────────────────
+window.addEventListener('load', () => {
+  setTimeout(() => document.getElementById('loader').classList.add('hidden'), 800);
+});
+
+// ── CURSOR ──────────────────────────────────────────────────────────
+const cursor = document.getElementById('cursor');
+if (window.innerWidth > 768) {
+  document.addEventListener('mousemove', e => {
+    cursor.style.left = e.clientX - 10 + 'px';
+    cursor.style.top = e.clientY - 10 + 'px';
+  });
+  document.querySelectorAll('a, button, .product-card, .service-item, .insta-item').forEach(el => {
+    el.addEventListener('mouseenter', () => cursor.classList.add('hover'));
+    el.addEventListener('mouseleave', () => cursor.classList.remove('hover'));
+  });
+}
+
+// ── NAV HIDE ON SCROLL ─────────────────────────────────────────────
+let lastScroll = 0;
+const navbar = document.getElementById('navbar');
+window.addEventListener('scroll', () => {
+  const current = window.scrollY;
+  if (current > lastScroll && current > 100) navbar.classList.add('hide-nav');
+  else navbar.classList.remove('hide-nav');
+  lastScroll = current;
+});
+
+// ── HAMBURGER ───────────────────────────────────────────────────────
+const hamburger = document.getElementById('hamburger');
+const mobileMenu = document.getElementById('mobileMenu');
+hamburger.addEventListener('click', () => mobileMenu.classList.toggle('open'));
+function closeMobile() { mobileMenu.classList.remove('open'); }
+
+// ── REVEAL ON SCROLL ───────────────────────────────────────────────
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) entry.target.classList.add('visible');
+  });
+}, { threshold: 0.1, rootMargin: '0px 0px -50px 0px' });
+document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+// ── SMOOTH ANCHOR ──────────────────────────────────────────────────
+document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+  anchor.addEventListener('click', function(e) {
+    e.preventDefault();
+    const target = document.querySelector(this.getAttribute('href'));
+    if (target) target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  });
+});
+
+// ── CONTACT FORM ────────────────────────────────────────────────────
+const contactForm = document.getElementById('contactForm');
+if (contactForm) {
+  contactForm.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const form = e.target;
+    const btn = form.querySelector('.form-submit');
+    const btnText = form.querySelector('.submit-text');
+    const btnLoading = form.querySelector('.submit-loading');
+    const successMsg = form.querySelector('.form-success');
+    const errorMsg = form.querySelector('.form-error-global');
+
+    // Reset states
+    successMsg.style.display = 'none';
+    errorMsg.style.display = 'none';
+    form.querySelectorAll('.form-group').forEach(g => g.classList.remove('error'));
+
+    // Client-side validation
+    let valid = true;
+    const name = form.querySelector('[name="name"]');
+    const email = form.querySelector('[name="email"]');
+    const message = form.querySelector('[name="message"]');
+
+    if (!name.value.trim() || name.value.trim().length < 2) {
+      name.closest('.form-group').classList.add('error');
+      name.closest('.form-group').querySelector('.form-error').textContent = 'Name is required (min 2 characters)';
+      valid = false;
+    }
+    if (!email.value.trim() || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email.value)) {
+      email.closest('.form-group').classList.add('error');
+      email.closest('.form-group').querySelector('.form-error').textContent = 'Valid email is required';
+      valid = false;
+    }
+    if (!message.value.trim() || message.value.trim().length < 10) {
+      message.closest('.form-group').classList.add('error');
+      message.closest('.form-group').querySelector('.form-error').textContent = 'Message is required (min 10 characters)';
+      valid = false;
+    }
+    if (!valid) return;
+
+    // Submit
+    btn.disabled = true;
+    btnText.style.display = 'none';
+    btnLoading.style.display = 'inline';
+
+    try {
+      const res = await fetch(`${API_BASE}/contact`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          name: name.value.trim(),
+          email: email.value.trim(),
+          subject: form.querySelector('[name="subject"]')?.value.trim() || '',
+          message: message.value.trim(),
+        }),
+      });
+      const data = await res.json();
+
+      if (res.ok && data.data) {
+        successMsg.style.display = 'block';
+        form.reset();
+      } else {
+        errorMsg.style.display = 'block';
+      }
+    } catch (err) {
+      errorMsg.style.display = 'block';
+    } finally {
+      btn.disabled = false;
+      btnText.style.display = 'inline';
+      btnLoading.style.display = 'none';
+    }
+  });
+}
+
+// ── NEWSLETTER FORM ─────────────────────────────────────────────────
+const newsletterForm = document.getElementById('newsletterForm');
+if (newsletterForm) {
+  newsletterForm.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const form = e.target;
+    const msg = form.querySelector('.newsletter-msg');
+    const emailInput = form.querySelector('[name="email"]');
+
+    msg.style.display = 'none';
+    msg.className = 'newsletter-msg';
+
+    if (!emailInput.value.trim() || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(emailInput.value)) {
+      msg.textContent = 'Please enter a valid email address.';
+      msg.classList.add('error');
+      msg.style.display = 'block';
+      return;
+    }
+
+    const btn = form.querySelector('button[type="submit"]');
+    btn.disabled = true;
+    btn.textContent = '...';
+
+    try {
+      const res = await fetch(`${API_BASE}/newsletter/subscribe`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email: emailInput.value.trim() }),
+      });
+      const data = await res.json();
+
+      if (res.ok) {
+        msg.textContent = 'Check your inbox to confirm your subscription!';
+        msg.classList.add('success');
+        emailInput.value = '';
+      } else {
+        msg.textContent = data.error?.message || 'Something went wrong.';
+        msg.classList.add('error');
+      }
+    } catch (err) {
+      msg.textContent = 'Network error. Please try again.';
+      msg.classList.add('error');
+    } finally {
+      msg.style.display = 'block';
+      btn.disabled = false;
+      btn.textContent = 'Subscribe';
+    }
+  });
+}
+
+// ── ANALYTICS BEACON ───────────────────────────────────────────────
+function trackEvent(eventType, metadata) {
+  try {
+    const body = {
+      event_type: eventType,
+      page_path: window.location.pathname,
+      referrer: document.referrer || null,
+      metadata: metadata || null,
+    };
+    // Use sendBeacon for reliability (works even when page is closing)
+    if (navigator.sendBeacon) {
+      const blob = new Blob([JSON.stringify(body)], { type: 'application/json' });
+      navigator.sendBeacon(`${API_BASE}/analytics`, blob);
+    } else {
+      fetch(`${API_BASE}/analytics`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(body),
+      }).catch(() => {});
+    }
+  } catch (e) {
+    // Silently fail — never break UX for analytics
+  }
+}
+
+// Track pageview on load
+trackEvent('pageview');
+
+// Track CTA clicks
+document.querySelectorAll('.btn-primary, .btn-secondary, .nav-cta').forEach(btn => {
+  btn.addEventListener('click', () => {
+    trackEvent('cta_click', { text: btn.textContent.trim() });
+  });
+});
+</script>
+</body>
+</html>
